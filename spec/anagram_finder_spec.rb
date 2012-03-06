@@ -9,6 +9,10 @@ describe AnagramFinder do
         subject.is_anagram?("hello", "hello").should be_true
       end
 
+      it "should return true when the words are the same but of different case" do
+        subject.is_anagram?("Hello", "helLo").should be_true
+      end
+
       it "should return true when the words contain double-byte chars and are identical" do
         subject.is_anagram?("café", "café").should be_true
       end
