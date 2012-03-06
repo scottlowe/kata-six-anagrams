@@ -1,10 +1,16 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 
 describe AnagramFinder do
   describe "#is_anagram?" do
     context "when two words are the same length" do
-      it "should return true when the words are identical" do
+      it "should return true when the words are ASCII and identical" do
         subject.is_anagram?("hello", "hello").should be_true
+      end
+
+      it "should return true when the words contain double-byte chars and are identical" do
+        subject.is_anagram?("café", "café").should be_true
       end
 
       it "should return true when the words contain the same characters in a different order" do
