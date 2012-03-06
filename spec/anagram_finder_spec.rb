@@ -21,19 +21,19 @@ describe AnagramFinder do
     end
 
     context "when two words are a different length" do
-      it "should return false when the words are nearly the same, but for an extra last character on the second word" do
+      it "should return false when second word contains the first, with extra last character on the second" do
         subject.is_anagram?("hello", "hellox").should be_false
       end
 
-      it "should return false when the words are nearly the same, but for an extra first character on the second word" do
+      it "should return false when second word contains the first, with extra first character on the second" do
         subject.is_anagram?("hello", "xhello").should be_false
       end
 
-      it "should return false when the words are nearly the same, but for an extra first character on the first word" do
+      it "should return false when second word contains the first, with extra first character on the first" do
         subject.is_anagram?("xhello", "hello").should be_false
       end
 
-      it "should return false when the words are nearly the same, but for an extra second character on the first word" do
+      it "should return false when second word contains the first, with extra last character on the first" do
         subject.is_anagram?("hellox", "hello").should be_false
       end
     end
