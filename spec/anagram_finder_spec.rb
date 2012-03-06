@@ -12,19 +12,19 @@ describe AnagramFinder do
   end
 
   describe "#is_anagram?" do
-    subject { @analyser = AnagramFinder.new("/tmp/dupes.txt") }
+    subject { @analyser = AnagramFinder.new("nofile.txt") }
 
     context "when two words are the same length" do
-      it "should return true when the words are ASCII and identical" do
-        subject.is_anagram?("hello", "hello").should be_true
+      it "should match against ASCII words" do
+        subject.is_anagram?("dog", "god").should be_true
       end
 
       it "should return true when the words are the same but of different case" do
         subject.is_anagram?("Hello", "helLo").should be_true
       end
 
-      it "should return true when the words contain double-byte chars and are identical" do
-        subject.is_anagram?("café", "café").should be_true
+      it "should match against words with double-byte characters" do
+        subject.is_anagram?("café", "aféc").should be_true
       end
 
       it "should return true when the words contain the same characters in a different order" do
@@ -35,7 +35,7 @@ describe AnagramFinder do
         subject.is_anagram?("hello", "booth").should be_false
       end
 
-      it "should return false when the words all characters are different" do
+      it "should not match words when all characters are different" do
         subject.is_anagram?("hello", "xgpbt").should be_false
       end
     end
@@ -105,7 +105,9 @@ describe AnagramFinder do
     end
 
     it "should contain real sets of anagrams" do
-      subject.include?(["miles", "limes", "smile", "slime"]).should be_true
+      subject.each.any? { |anagram_group|
+        anagram_group.all? {|word| ["miles", "limes", "smile", "slime"].include? word}
+      }.should be_true
     end
   end
 

@@ -1,44 +1,45 @@
 class AnagramFinder
-  attr_accessor :file_location
 
   def initialize(words_file_location)
     @file_location = words_file_location
   end
 
   def load_words
-    words = {}
-    File.open(@file_location, 'r') do |file|
-      while line = file.gets
-        word = line.strip.downcase
-        words[word] = word
+    @words ||= begin
+      words = {}
+      File.open(@file_location, 'r') do |file|
+        while line = file.gets
+          word = line.strip.downcase
+          words[word] = word
+        end
       end
+      words
     end
-    words
   end
 
   def analyse
     results = {}
     words = load_words
 
-    words.each_key do |first_word|
-      words.each_key do |second_word|
-        next unless is_anagram? first_word, second_word
+    words.each_key do |word_1|
+      words.each_key do |word_2|
+        next unless is_anagram? word_1, word_2
 
-        if results.key? first_word
-          results[first_word] << second_word
+        if results.key? word_1
+          results[word_1] << word_2
         else
-          results[first_word] = [second_word]
+          results[word_1] = [word_2]
         end
 
-        words.delete second_word
+        words.delete word_2
       end
     end
 
-    results.values.delete_if {|anagram_set| anagram_set.size <= 1}
+    results.each {|k,v| v << k}.values
   end
 
   def is_anagram?(first, second)
-    return if first.length != second.length
+    return false if first.length != second.length || first == second
 
     first.downcase.chars.select {|c| c}.all? do |char|
       second.downcase.chars.select {|c| c}.include? char
