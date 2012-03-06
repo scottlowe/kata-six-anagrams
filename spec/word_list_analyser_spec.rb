@@ -3,8 +3,9 @@ require 'fakefs/spec_helpers'
 
 describe WordListAnalyser do
   include FakeFS::SpecHelpers
+
   before(:all) do
-    @dupes = %w{one Three Two three four three Five one six Six}
+    @dupes    = %w{one Three Two three four three Five one six Six}
     @anagrams = %w{Miles dog peek dummy keep Limes god Smile Slime dummy}
   end
 
@@ -20,7 +21,7 @@ describe WordListAnalyser do
     subject { @analyser = WordListAnalyser.new("/tmp/dupes.txt") }
 
     it "should load words into an Enumerable" do
-      subject.load_words.should be_kind_of(Enumerable)
+      subject.load_words.should be_kind_of Enumerable
     end
 
     it "should not contain dupes" do
@@ -40,7 +41,7 @@ describe WordListAnalyser do
     subject { WordListAnalyser.new("/tmp/anagrams.txt").analyse }
 
     it "should return an Enumerable" do
-      subject.should be_kind_of(Enumerable)
+      subject.should be_kind_of Enumerable
     end
 
     it "should only contain a word once in it's output" do
