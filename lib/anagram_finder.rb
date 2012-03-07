@@ -18,7 +18,17 @@ class AnagramFinder
   end
 
   def analyse
-    load_words.values.group_by {|w| w.chars.sort * ''}.values.delete_if {|set| set.size <= 1}
+    @result ||= load_words.values.group_by {|w| w.chars.sort * ''}.values.delete_if {|set| set.size <= 1}
+    @result
+  end
+
+  def longest_anagram_set
+    analyse.sort_by {|set| set.length}.last
+  end
+
+  def longest_anagram_words
+    by_length = analyse.flatten.group_by {|x| x.length}
+    by_length[by_length.keys.sort.last]
   end
 
 end

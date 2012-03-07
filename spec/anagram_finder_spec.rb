@@ -8,7 +8,7 @@ describe AnagramFinder do
 
   before(:all) do
     @dupes    = %w{one Three Two three four three Five one six Six}
-    @anagrams = %w{Miles dog peek dummy keep Limes god Smile Slime dummy}
+    @anagrams = %w{Miles dog peek dummy keep Limes god skating takings Smile Slime dummy tasking}
   end
 
   describe "#load_words" do
@@ -31,7 +31,7 @@ describe AnagramFinder do
     end
   end
 
-  describe "#analyse" do
+  describe "analysis" do
     before(:each) do
       FileUtils.mkdir_p('/tmp')
 
@@ -40,26 +40,45 @@ describe AnagramFinder do
       end
     end
 
-    subject { AnagramFinder.new("/tmp/anagrams.txt").analyse }
+    describe "#analyse" do
+      subject { AnagramFinder.new("/tmp/anagrams.txt").analyse }
 
-    it "should return an Enumerable" do
-      subject.should be_kind_of Enumerable
+      it "should return an Enumerable" do
+        subject.should be_kind_of Enumerable
+      end
+
+      it "should only contain a word once in it's output" do
+        all_words = subject.flatten
+        uniq_words = subject.flatten.uniq
+        all_words.count.should == uniq_words.count
+      end
+
+      it "should not contain words that are not anagrams" do
+        subject.flatten.include?("dummy").should_not be_true
+      end
+
+      it "should contain real sets of anagrams" do
+        subject.each.any? { |anagram_group|
+          anagram_group.all? {|word| %w{miles limes smile slime}.include? word}
+        }.should be_true
+      end
     end
 
-    it "should only contain a word once in it's output" do
-      all_words = subject.flatten
-      uniq_words = subject.flatten.uniq
-      all_words.count.should == uniq_words.count
-    end
+    describe "Statistics" do
+      subject { AnagramFinder.new("/tmp/anagrams.txt") }
 
-    it "should not contain words that are not anagrams" do
-      subject.flatten.include?("dummy").should_not be_true
-    end
+      it "#longest_anagram_set should return the longest set of anagrams" do
+        subject.longest_anagram_set.all? { |word|
+          %w{miles limes smile slime}.include? word
+        }.should be_true
+      end
 
-    it "should contain real sets of anagrams" do
-      subject.each.any? { |anagram_group|
-        anagram_group.all? {|word| ["miles", "limes", "smile", "slime"].include? word}
-      }.should be_true
+      it "#longest_anagram_words should return a collection of longest anagrams words" do
+        subject.longest_anagram_words.all? { |word|
+          %w{skating takings tasking}.include? word
+        }.should be_true
+      end
+
     end
   end
 
