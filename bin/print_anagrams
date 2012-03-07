@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require File.expand_path('../../lib/anagram_finder', __FILE__)
+
+usage = "print_anagrams <words_file_name>"
+words_file = ARGV.shift or abort usage
+
+words_file = "./#{words_file}" unless words_file.match(/^[\/.]/)
+
+finder = AnagramFinder.new(words_file)
+started_at = Time.now
+finder.analyse.each {|anagram_set| puts anagram_set * " " + "\n"}
+
+puts "\nElapsed time: #{Time.now - started_at}secs" 
