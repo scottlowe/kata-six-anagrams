@@ -11,54 +11,6 @@ describe AnagramFinder do
     @anagrams = %w{Miles dog peek dummy keep Limes god Smile Slime dummy}
   end
 
-  describe "#is_anagram?" do
-    subject { @analyser = AnagramFinder.new("nofile.txt") }
-
-    context "when two words are the same length" do
-      it "should match against ASCII words" do
-        subject.is_anagram?("dog", "god").should be_true
-      end
-
-      it "should return true when the words are the same but of different case" do
-        subject.is_anagram?("Hello", "helLo").should be_true
-      end
-
-      it "should match against words with double-byte characters" do
-        subject.is_anagram?("café", "aféc").should be_true
-      end
-
-      it "should return true when the words contain the same characters in a different order" do
-        subject.is_anagram?("hello", "elolh").should be_true
-      end
-
-      it "should return false when the words contain some different characters" do
-        subject.is_anagram?("hello", "booth").should be_false
-      end
-
-      it "should not match words when all characters are different" do
-        subject.is_anagram?("hello", "xgpbt").should be_false
-      end
-    end
-
-    context "when two words are a different length" do
-      it "should return false when second word contains the first, with extra last character on the second" do
-        subject.is_anagram?("hello", "hellox").should be_false
-      end
-
-      it "should return false when second word contains the first, with extra first character on the second" do
-        subject.is_anagram?("hello", "xhello").should be_false
-      end
-
-      it "should return false when second word contains the first, with extra first character on the first" do
-        subject.is_anagram?("xhello", "hello").should be_false
-      end
-
-      it "should return false when second word contains the first, with extra last character on the first" do
-        subject.is_anagram?("hellox", "hello").should be_false
-      end
-    end
-  end
-
   describe "#load_words" do
     before(:each) do
       FileUtils.mkdir_p('/tmp')
