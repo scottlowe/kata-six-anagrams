@@ -11,6 +11,6 @@ finder = AnagramFinder.new(words_file)
 started_at = Time.now
 finder.analyse.each {|anagram_set| puts anagram_set * " " + "\n"}
 
-puts "\nElapsed time: #{Time.now - started_at}secs\n\n"
+puts "\nElapsed time: #{Time.now - started_at} secs\n\n"
 puts "Longest anagram words are: '#{finder.longest_anagram_words * " "}'"
 puts "Longest anagram set is: '#{finder.longest_anagram_set}'"

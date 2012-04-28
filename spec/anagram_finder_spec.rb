@@ -47,7 +47,7 @@ describe AnagramFinder do
         subject.should be_kind_of Enumerable
       end
 
-      it "should only contain a word once in it's output" do
+      it "should only contain a word once in its output" do
         all_words = subject.flatten
         uniq_words = subject.flatten.uniq
         all_words.count.should == uniq_words.count
